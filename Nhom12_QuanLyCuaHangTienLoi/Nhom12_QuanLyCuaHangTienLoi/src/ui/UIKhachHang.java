@@ -41,6 +41,9 @@ public class UIKhachHang extends JPanel {
     private CardLayout cardLayout;
     private JPanel pnlCard;
     private JComboBox<String> cbLoai;
+    
+    private DefaultTableModel modalKhachHang;
+    private JTable tableKhachHang;
 
     public UIKhachHang() {
         setLayout(new BorderLayout());
@@ -145,9 +148,80 @@ public class UIKhachHang extends JPanel {
         panel.add(btnXoa);
         panel.add(btnDienLai);
         
+        addEvents();
+        
         return panel;
     }
      
+    private void addEvents() {
+        
+        // 👉 Nút Thêm
+        btnThem.addActionListener(e -> themKhachHang());
+
+        // 👉 Nút Xóa
+        btnXoa.addActionListener(e -> xoaKhachHang());
+
+        // 👉 Nút Cập nhật
+        btnCapNhat.addActionListener(e -> capNhatKhachHang());
+
+        // 👉 Nút Điền lại
+        btnDienLai.addActionListener(e -> clearForm());
+
+        // 👉 Nút Tìm kiếm
+        btnTimKiem.addActionListener(e -> timKiem());
+    }
+    
+    
+    private void themKhachHang() {
+        String ma = tfMaKH.getText();
+        String ten = tfHoTen.getText();
+        String sdt = tfSoDT.getText();
+        String diem = tfDiemTL.getText();
+        String gt = nam.isSelected() ? "Nam" : "Nữ";
+
+        modalKhachHang.addRow(new Object[]{ma, ten, gt, sdt, diem});
+    }
+    
+    private void xoaKhachHang() {
+        int row = tableKhachHang.getSelectedRow();
+        if (row != -1) {
+        	modalKhachHang.removeRow(row);
+        }
+    }
+    
+    private void capNhatKhachHang() {
+        int row = tableKhachHang.getSelectedRow();
+        if (row != -1) {
+        	modalKhachHang.setValueAt(tfMaKH.getText(), row, 0);
+        	modalKhachHang.setValueAt(tfHoTen.getText(), row, 1);
+            modalKhachHang.setValueAt(nam.isSelected() ? "Nam" : "Nữ", row, 2);
+            modalKhachHang.setValueAt(tfSoDT.getText(), row, 3);
+            modalKhachHang.setValueAt(tfDiemTL.getText(), row, 4);
+        }
+    }
+    
+    private void clearForm() {
+        tfMaKH.setText("");
+        tfHoTen.setText("");
+        tfSoDT.setText("");
+        tfDiemTL.setText("");
+        groupGtinh.clearSelection();
+    }
+    
+    private void timKiem() {
+        String keyword = tfTimTenKH.getText().toLowerCase();
+
+        for (int i = 0; i < modalKhachHang.getRowCount(); i++) {
+            String ten = modalKhachHang.getValueAt(i, 1).toString().toLowerCase();
+            if (ten.contains(keyword)) {
+                tableKhachHang.setRowSelectionInterval(i, i);
+                break;
+            }
+        }
+    }
+    
+    
+    
     // ===== TABLE =====
     private JPanel createTablePanel() {
         JPanel panel = new JPanel(new BorderLayout());
@@ -159,17 +233,17 @@ public class UIKhachHang extends JPanel {
                 "Điểm tích lũy"
         };
 
-        DefaultTableModel model = new DefaultTableModel(columns, 0);
+        modalKhachHang = new DefaultTableModel(columns, 0);
 
-        // Sửa lỗi: Đổi data mẫu cho phù hợp với 5 cột của khách hàng (code cũ đang truyền vào 7 cột của sản phẩm)
-        model.addRow(new Object[]{"KH0001", "Nguyễn Văn A", "Nam", "0987654321", "150"});
+       
+        modalKhachHang.addRow(new Object[]{"KH0001", "Nguyễn Văn A", "Nam", "0987654321", "150"});
 
-        JTable table = new JTable(model);
-        table.setBackground(Color.WHITE);
+         tableKhachHang = new JTable(modalKhachHang);
+         tableKhachHang.setBackground(Color.WHITE);
         
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBackground(Color.WHITE); // Set nền trắng cho thanh cuộn
-        scrollPane.getViewport().setBackground(Color.WHITE); // Set nền trắng cho vùng hiển thị bên dưới bảng
+        JScrollPane scrollPane = new JScrollPane(tableKhachHang);
+        scrollPane.setBackground(Color.WHITE); 
+        scrollPane.getViewport().setBackground(Color.WHITE); 
 
         panel.add(scrollPane, BorderLayout.CENTER);
 
