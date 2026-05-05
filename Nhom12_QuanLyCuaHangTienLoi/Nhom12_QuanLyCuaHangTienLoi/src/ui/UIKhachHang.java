@@ -240,6 +240,9 @@ public class UIKhachHang extends JPanel {
 
          tableKhachHang = new JTable(modalKhachHang);
          tableKhachHang.setBackground(Color.WHITE);
+
+        tableKhachHang.getTableHeader().setBackground(new Color(0, 51, 102)); // xanh đậm
+         tableKhachHang.getTableHeader().setForeground(Color.WHITE); // chữ trắng
         
         JScrollPane scrollPane = new JScrollPane(tableKhachHang);
         scrollPane.setBackground(Color.WHITE); 
