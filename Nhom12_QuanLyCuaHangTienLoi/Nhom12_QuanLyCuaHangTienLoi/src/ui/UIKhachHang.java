@@ -59,7 +59,7 @@ public class UIKhachHang extends JPanel {
         ThongTinKH.setBorder(new TitledBorder("Thông tin khách hàng"));
 
         JPanel formTTKH = new JPanel(new GridLayout(3, 2, 20, 20));
-        formTTKH.setBackground(Color.WHITE); // Sửa lỗi: Set nền trắng cho form
+        formTTKH.setBackground(Color.WHITE); 
         
         tfHoTen = new JTextField(10);
         tfMaKH = new JTextField(10);
@@ -70,10 +70,10 @@ public class UIKhachHang extends JPanel {
         tfTimTenKH = new JTextField(10);
         
         nam = new JRadioButton("Nam");
-        nam.setBackground(Color.WHITE); // Sửa lỗi: Set nền trắng cho RadioButton
+        nam.setBackground(Color.WHITE); 
         
-        nu = new JRadioButton("Nữ"); // Sửa lỗi: Viết có dấu
-        nu.setBackground(Color.WHITE); // Sửa lỗi: Set nền trắng cho RadioButton
+        nu = new JRadioButton("Nữ"); 
+        nu.setBackground(Color.WHITE);
         
         groupGtinh = new ButtonGroup();
         groupGtinh.add(nu);
@@ -155,31 +155,30 @@ public class UIKhachHang extends JPanel {
      
     private void addEvents() {
         
-        // 👉 Nút Thêm
+     
         btnThem.addActionListener(e -> themKhachHang());
 
-        // 👉 Nút Xóa
         btnXoa.addActionListener(e -> xoaKhachHang());
 
-        // 👉 Nút Cập nhật
         btnCapNhat.addActionListener(e -> capNhatKhachHang());
 
-        // 👉 Nút Điền lại
+ 
         btnDienLai.addActionListener(e -> clearForm());
 
-        // 👉 Nút Tìm kiếm
+ 
         btnTimKiem.addActionListener(e -> timKiem());
     }
     
     
     private void themKhachHang() {
-        String ma = tfMaKH.getText();
-        String ten = tfHoTen.getText();
-        String sdt = tfSoDT.getText();
-        String diem = tfDiemTL.getText();
+        String ma = tfMaKH.getText().trim();
+        String ten = tfHoTen.getText().trim();
+        String sdt = tfSoDT.getText().trim();
+        String diem = tfDiemTL.getText().trim();
         String gt = nam.isSelected() ? "Nam" : "Nữ";
 
-        modalKhachHang.addRow(new Object[]{ma, ten, gt, sdt, diem});
+        String col[] = {ma, ten, gt, sdt, diem};
+        modalKhachHang.addRow(col);
     }
     
     private void xoaKhachHang() {
@@ -240,10 +239,10 @@ public class UIKhachHang extends JPanel {
 
          tableKhachHang = new JTable(modalKhachHang);
          tableKhachHang.setBackground(Color.WHITE);
-
-        tableKhachHang.getTableHeader().setBackground(new Color(0, 51, 102)); // xanh đậm
-         tableKhachHang.getTableHeader().setForeground(Color.WHITE); // chữ trắng
         
+         tableKhachHang.getTableHeader().setBackground(new Color(0, 51, 102)); // xanh đậm
+         tableKhachHang.getTableHeader().setForeground(Color.WHITE); // chữ trắng
+         
         JScrollPane scrollPane = new JScrollPane(tableKhachHang);
         scrollPane.setBackground(Color.WHITE); 
         scrollPane.getViewport().setBackground(Color.WHITE); 
